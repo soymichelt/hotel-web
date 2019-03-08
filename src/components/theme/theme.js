@@ -5,6 +5,15 @@ import './theme.css'
 import { Provider } from 'react-redux'
 import { storeApp } from './../../lib/state/store'
 
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import red from '@material-ui/core/colors/red';
+
+const theme = createMuiTheme({
+    palette: {
+        primary: red,
+    },
+});
+
 export default (props) => {
 
     const { children } = props
@@ -12,11 +21,13 @@ export default (props) => {
     return (
         <Provider store={storeApp()}>
             <Fragment>
-                <Toolbar />
-                <AppBar />
-                <div className={'body-theme'}>
-                    {children}
-                </div>
+                <MuiThemeProvider theme={theme}>
+                    <Toolbar />
+                    <AppBar />
+                    <div className={'body-theme'}>
+                        {children}
+                    </div>
+                </MuiThemeProvider>
             </Fragment>
         </Provider>
     )
