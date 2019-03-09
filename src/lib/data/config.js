@@ -1,12 +1,12 @@
 import firebase from 'firebase/app'
 
 var config = {
-    apiKey: "AIzaSyA5sDMPGv-zpr0p_HuKDWRcJka6Epgrxl8",
-    authDomain: "carnet-app.firebaseapp.com",
-    databaseURL: "https://carnet-app.firebaseio.com",
-    projectId: "carnet-app",
-    storageBucket: "carnet-app.appspot.com",
-    messagingSenderId: "786274656627"
+    apiKey: "AIzaSyA6UEdqwQb-HXAjxkehl16vk5zgor-Su-c",
+    authDomain: "web-hotel-chatbot.firebaseapp.com",
+    databaseURL: "https://web-hotel-chatbot.firebaseio.com",
+    projectId: "web-hotel-chatbot",
+    storageBucket: "web-hotel-chatbot.appspot.com",
+    messagingSenderId: "588796666174"
 }
 
 export const FirebaseInitialize = () => {

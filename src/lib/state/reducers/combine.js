@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
-import { peopleReducer } from './peopleReducer'
-import { peopleCreateReducer } from './peopleCreateReducer'
+import { roomReducer } from './roomReducer'
+import { roomCreateReducer } from './roomCreateReducer'
 
 const root = combineReducers({
-    people:     peopleReducer,
-    peopleCreate: peopleCreateReducer,
+    room:     roomReducer,
+    roomCreate: roomCreateReducer,
 })
 
 export default root
