@@ -1,6 +1,6 @@
 import {
     getRoomsQuery,
-} from './../../data/pearsonData'
+} from './../../data/roomData'
 
 /* Action Type's */
 export const SET_LOADING_IN_ROOM_CREATE    =   'SET_LOADING_IN_ROOM_CREATE'

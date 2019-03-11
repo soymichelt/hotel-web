@@ -44,10 +44,15 @@ export const getRoomList = (unsuscribe = false) => {
 
 const extractRoomData = (doc) => ({
 
-    id:            doc.id,
-    carnet:         doc.data().carnet,
-    name:           doc.data().name,
-    typeRoom:     doc.data().typeRoom,
+    uid: doc.id,
+    imagenURL: doc.data().imagenURL,
+    numeroHabitacion: doc.data().numeroHabitacion,
+    descripcion: doc.data().descripcion,
+    conAire: doc.data().conAire,
+    numeroPersonas: doc.data().numeroPersonas,
+    tipoCama: doc.data().tipoCama,
+    disponible: doc.data().disponible,
+    precio: doc.data().precio,
     
 })
 

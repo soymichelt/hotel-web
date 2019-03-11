@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Home from './pages/index'
 import * as serviceWorker from './serviceWorker'
 
-import FirebaseInitialize from './lib/data/config'
+import { FirebaseInitialize } from './lib/data/config'
 
 FirebaseInitialize()
 
