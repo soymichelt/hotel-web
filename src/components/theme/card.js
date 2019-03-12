@@ -19,6 +19,8 @@ import PeopleIcon from '@material-ui/icons/People'
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows'
 import HotelIcon from '@material-ui/icons/Hotel'
 
+import BlueGray from '@material-ui/core/colors/blueGrey'
+
 const styles = {
     card: {
         maxWidth: 345,
@@ -30,6 +32,9 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between'
     },
+    icons: {
+        color: BlueGray[900],
+    }
 };
 
 const MediaCard = (props) => {
@@ -61,7 +66,7 @@ const MediaCard = (props) => {
                                     scope="row"
                                     padding={'none'}
                                 >
-                                    <PeopleIcon />
+                                    <PeopleIcon className={classes.icons} />
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -76,7 +81,7 @@ const MediaCard = (props) => {
                                     scope="row"
                                     padding={'none'}
                                 >
-                                    <CompareArrowsIcon />
+                                    <CompareArrowsIcon className={classes.icons} />
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -91,7 +96,7 @@ const MediaCard = (props) => {
                                     scope="row"
                                     padding={'none'}
                                 >
-                                    <HotelIcon />
+                                    <HotelIcon className={classes.icons} />
                                 </TableCell>
                                 <TableCell
                                     align="right"

@@ -16,7 +16,7 @@ const theme = createMuiTheme({
 
 export default (props) => {
 
-    const { children } = props
+    const { children, heroSection, } = props
     
     return (
         <Provider store={storeApp()}>
@@ -24,6 +24,7 @@ export default (props) => {
                 <MuiThemeProvider theme={theme}>
                     <Toolbar />
                     <AppBar />
+                    {heroSection}
                     <div className={'body-theme'}>
                         {children}
                     </div>
