@@ -7,7 +7,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography';
 
 import Table from '@material-ui/core/Table';
@@ -44,7 +43,6 @@ const MediaCard = (props) => {
         title,
         description,
         onReserve,
-        onMore,
     } = props;
     return (
         <Card className={classes.card}>
