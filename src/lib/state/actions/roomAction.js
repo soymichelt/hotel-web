@@ -81,8 +81,6 @@ const updateRooms = (rooms, data, type) => {
 
         let indexRoomInArray = rooms.indexOf(roomToChange)
 
-        console.log(indexRoomInArray)
-
         if(type === 'modified') {
             if(indexRoomInArray > -1) {
                 rooms[indexRoomInArray] = data

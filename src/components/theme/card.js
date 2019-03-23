@@ -53,7 +53,7 @@ const MediaCard = (props) => {
                     title={title}
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="p" component="p">
+                    <Typography gutterBottom component="p">
                         {title}
                     </Typography>
                     <Table className={classes.table}>

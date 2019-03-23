@@ -5,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -15,6 +14,23 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/DateRange';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
+import { Link } from 'react-router-dom'
+
+import { connect } from 'react-redux';
+/*
+    Actions
+*/
+import {
+  signoutStarted,
+  signoutFinalized,
+  signoutError,
+  authorized,
+} from './../../lib/state/actions/signInAction'
+
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 const styles = theme => ({
   root: {
@@ -99,6 +115,10 @@ class PrimarySearchAppBar extends React.Component {
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
     this.handleMobileMenuClose();
+
+    //salir
+    this.props.signoutStarted();
+    this.logout();
   };
 
   handleMobileMenuOpen = event => {
@@ -109,9 +129,44 @@ class PrimarySearchAppBar extends React.Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  isUserAuth = () => {
+
+    return (this.props.userAccount !== undefined);
+
+  };
+
+  logout = () => {
+
+    try {
+
+        firebase.auth().signOut()
+        .then(() => {
+            console.log('Firebase Auth Logout Success')
+        })
+        .catch((error) => {
+
+            console.log('Firebase Auth Logout Error Promise Catch:');
+
+            console.log(error);
+
+            this.props.signinError(error);
+
+        });
+
+    }
+    catch(error) {
+
+        console.log('Error Try Catch:');
+
+        console.log(error);
+
+    }
+
+  };
+
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes } = this.props;
+    const { classes, } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -123,35 +178,91 @@ class PrimarySearchAppBar extends React.Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>Salir</MenuItem>
       </Menu>
     );
 
-    const renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMobileMenuOpen}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleMobileMenuClose}>
-          <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
+    let renderMobileMenu;
+    if(this.isUserAuth()) {
+      renderMobileMenu = (
+        <Menu
+          anchorEl={mobileMoreAnchorEl}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={isMobileMenuOpen}
+          onClose={this.handleMenuClose}
+        >
+          <MenuItem>
+            <Link to={'/reservas'} component={'a'}>
+              <IconButton style={{color: '#fff'}}>
+                <NotificationsIcon />
+              </IconButton>
+              <p>Reservaciones</p>
+            </Link>
+          </MenuItem>
+          <MenuItem onClick={this.handleProfileMenuOpen}>
+            <IconButton color="inherit">
+              <ExitToAppIcon />
+            </IconButton>
+            <p>Perfil</p>
+          </MenuItem>
+        </Menu>
+      );
+    }
+    else {
+      renderMobileMenu = (
+        <Menu
+          anchorEl={mobileMoreAnchorEl}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={isMobileMenuOpen}
+          onClose={this.handleMenuClose}
+        >
+          <MenuItem>
+            <Link to={'/login'} component={'a'}>
+              <IconButton style={{color: '#fff'}}>
+                <AccountCircle />
+              </IconButton>
+              <p>Iniciar Sesión</p>
+            </Link>
+          </MenuItem>
+        </Menu>
+      );
+    }
+
+    let renderMenuDesktop;
+    if(this.isUserAuth()) {
+      renderMenuDesktop = (
+        <div className={classes.sectionDesktop}>
+          <Link to={'/reservas'} component={'a'}>
+            <IconButton style={{color: '#fff'}}>
               <NotificationsIcon />
-            </Badge>
+            </IconButton>
+          </Link>
+          <IconButton
+            aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+            aria-haspopup="true"
+            onClick={this.handleProfileMenuOpen}
+            color="inherit"
+          >
+            <ExitToAppIcon />
           </IconButton>
-          <p>Reservaciones</p>
-        </MenuItem>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <p>Perfil</p>
-        </MenuItem>
-      </Menu>
-    );
+        </div>
+      );
+    }
+    else {
+      renderMenuDesktop = (
+        <div className={classes.sectionDesktop}>
+          <Link to={'/login'} component={'a'}>
+            <IconButton
+              style={{color: '#fff'}}
+            >
+              <AccountCircle />
+            </IconButton>
+          </Link>
+        </div>
+      );
+    }
 
     return (
       <div className={classes.root}>
@@ -160,9 +271,11 @@ class PrimarySearchAppBar extends React.Component {
             <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-              Hotel Masagua
-            </Typography>
+            <Link to='/'>
+              <Typography className={classes.title} style={{color: '#fff', textDecoration: 'none',}} variant="h6" color="inherit" noWrap>
+                Hotel Masagua
+              </Typography>
+            </Link>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -176,21 +289,9 @@ class PrimarySearchAppBar extends React.Component {
               />
             </div>
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <IconButton color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup="true"
-                onClick={this.handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </div>
+
+            {renderMenuDesktop}
+
             <div className={classes.sectionMobile}>
               <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
                 <MoreIcon />
@@ -203,10 +304,61 @@ class PrimarySearchAppBar extends React.Component {
       </div>
     );
   }
+
+  componentDidCatch() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+          // User is signed in.
+          /*var displayName = user.displayName;
+          var email = user.email;
+          var emailVerified = user.emailVerified;
+          var photoURL = user.photoURL;
+          var isAnonymous = user.isAnonymous;
+          var uid = user.uid;
+          var providerData = user.providerData;*/
+          // ...
+          console.log('autorizado')
+          this.props.authorized(user);
+      } else {
+          this.props.authorized(null);
+      }
+    });
+  }
+
 }
 
 PrimarySearchAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PrimarySearchAppBar)
+const mapStateToProps = (newState, props) => {
+
+  var { signIn } = newState;
+
+  let userAccount = undefined;
+
+  if(signIn) {
+      const { current } = signIn;
+      userAccount = current;
+  }
+
+  console.log('appBar', userAccount)
+
+  return {
+      userAccount: userAccount,
+  };
+
+};
+
+const mapDispatchToProps = dispatch => ({
+
+  signoutStarted: () => dispatch(signoutStarted()),
+  signoutFinalized: () => dispatch(signoutFinalized()),
+  signoutError: (error) => dispatch(signoutError(error)),
+  authorized: (user) => dispatch(authorized(user)),
+
+});
+
+const AppBarWithStyles = withStyles(styles)(PrimarySearchAppBar);
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppBarWithStyles);

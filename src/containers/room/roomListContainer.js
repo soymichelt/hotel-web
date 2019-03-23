@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import RoomList from './../../components/room/roomList'
+import Create from './../reserves/reserve-create-container'
 import { connect } from 'react-redux'
 import {
     getRoomList,
@@ -7,24 +8,66 @@ import {
 
 class IndexContainer extends Component {
 
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            roomId: '',
+            roomCaption: '',
+            reserveCreateOpen: false,
+        }
+
+    }
+
+    onReserveClick = (roomId, roomCaption) => {
+        console.log('onReserveClick', roomId, roomCaption)
+        this.setState({
+            roomId: roomId,
+            roomCaption: roomCaption,
+            reserveCreateOpen: true,
+        })
+    }
+
+    handleCreateClose = () => {
+        this.setState({
+            roomId: '',
+            roomCaption: '',
+            reserveCreateOpen: false,
+        })
+    }
+
     render() {
 
         const {
             list,
         } = this.props
 
-        console.log(list)
+        const {
+            roomId,
+            roomCaption,
+            reserveCreateOpen,
+        } = this.state
 
         return (
-            <RoomList
-                data={list}
-            />
+            <Fragment>
+                <RoomList
+                    data={list}
+                    onReserve={this.onReserveClick}
+                />
+                {
+                    <Create
+                        roomId={roomId}
+                        roomCaption={roomCaption}
+                        open={reserveCreateOpen}
+                        onClose={this.handleCreateClose}
+                    />
+                }
+            </Fragment>
         )
 
     }
 
     componentDidMount() {
-        console.log('ComponentDidMount')
         this.props.getRoomList()
     }
 
@@ -32,10 +75,8 @@ class IndexContainer extends Component {
 
 const mapStateToProps = (newState, newProps) => {
     const { room } = newState
-    console.log('mapStateToProps', room)
     if(room) {
         const { list } = room
-        console.log('List', list)
         return ({
             list,
         })
