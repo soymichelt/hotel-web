@@ -4,6 +4,7 @@ import { roomCreateReducer } from './roomCreateReducer'
 import { signInReducer } from './signInReducer'
 import { reserveCreateReducer } from './reserveCreateReducer'
 import { reserveReducer } from './reserveReducer'
+import { reserveAprobadoReducer } from './reserveAprobadoReducer'
 
 const root = combineReducers({
     room:     roomReducer,
@@ -11,6 +12,7 @@ const root = combineReducers({
     signIn: signInReducer,
     reserveCreate: reserveCreateReducer,
     reserve: reserveReducer,
+    reserveAprobado: reserveAprobadoReducer,
 })
 
 export default root

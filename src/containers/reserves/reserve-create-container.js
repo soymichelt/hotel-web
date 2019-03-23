@@ -86,6 +86,16 @@ class CreateContainer extends Component {
             address,
         } = this.state.reserveData
 
+        if(this.props.state === 1) {
+            nombre = ''
+            DNI = ''
+            fechaEntrada = ''
+            fechaSalida = ''
+            telefono = ''
+            email = ''
+            address = ''
+        }
+
         console.log("render", this.state.reserveData)
 
         return (

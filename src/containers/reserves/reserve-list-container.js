@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton'
 import OpenIcon from '@material-ui/icons/FolderOpenRounded'
 import { connect } from 'react-redux'
 import ReserveList from './../../components/reserves/reserve-list'
+import ReserveChangeState from './../../components/reserves/reserve-change-state'
 
 import {
     getReserveList,
@@ -16,6 +17,8 @@ class ListContainer extends Component {
 
         this.state = {
             reserveCreateOpen: false,
+            openAprobado: false,
+            reserveId: '',
         }
     }
 
@@ -26,6 +29,7 @@ class ListContainer extends Component {
     }
 
     handleReserveCreateClose = () => {
+        console.log('handleReserveCreateClose')
         this.setState({
             reserveCreateOpen: false,
         });
@@ -34,37 +38,25 @@ class ListContainer extends Component {
     handleDelete = () => {}
 
     handleOpenClick = (reserveId) => {
+        this.setState({
+            openAprobado: true,
+            reserveId: reserveId,
+        })
     }
 
-    counter = 0;
-
-    createData = (name, carnet, typeReserve) => {
-        
-        this.counter += 1
-
-        return {
-            id: this.counter,
-            name,
-            carnet,
-            typeReserve,
-            oper: (
-                <IconButton
-                    onClick={(e) => {
-                        e.stopPropagation()
-                        this.handleOpenClick(this.counter)
-                    }}
-                >
-                    <OpenIcon />
-                </IconButton>
-            ),
-        }
-
+    handleCloseFormAprobado = () => {
+        this.setState({
+            openAprobado: false,
+            reserveId: '',
+        })
     }
 
     render() {
 
         const {
             reserveCreateOpen,
+            openAprobado,
+            reserveId,
         } = this.state
 
         const {
@@ -92,8 +84,8 @@ class ListContainer extends Component {
                         ...item,
                         operacion:(
                             <IconButton onClick={(e) => {
-                                e.stopPropagation()
                                 this.handleOpenClick(item.id)
+                                e.stopPropagation()
                             }}>
                                 <OpenIcon />
                             </IconButton>
@@ -116,6 +108,16 @@ class ListContainer extends Component {
                     reserveCreateOpen === true ? <ReserveCreate
                         open={reserveCreateOpen}
                         onClose={this.handleReserveCreateClose}
+                    />
+                    :
+                    null
+                }
+
+                {
+                    openAprobado === true ?<ReserveChangeState
+                        open={openAprobado}
+                        reserveId={reserveId}
+                        onClose={this.handleCloseFormAprobado}
                     />
                     :
                     null

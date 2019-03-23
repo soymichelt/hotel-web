@@ -253,7 +253,7 @@ class PrimarySearchAppBar extends React.Component {
     else {
       renderMenuDesktop = (
         <div className={classes.sectionDesktop}>
-          <Link to={'/login'} component={'a'}>
+          <Link to={'/login'} component={'a'} style={{textDecoration: 'none',}}>
             <IconButton
               style={{color: '#fff'}}
             >

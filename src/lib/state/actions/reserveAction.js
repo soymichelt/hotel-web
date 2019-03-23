@@ -74,16 +74,18 @@ const extractReservesList = (getState) => {
 }
 
 const updateReserves = (reserves, data, type) => {
+
+    console.log(reserves, data, type)
     
     if(type === 'added') {
         reserves.unshift(data)
     } else {
 
-        const reserveToChange = reserves.find(item => item.uid === data.uid)
+        const reserveToChange = reserves.find(item => item.id === data.id)
 
         let indexReserveInArray = reserves.indexOf(reserveToChange)
 
-        console.log(indexReserveInArray)
+        console.log('indexReserveInArray',indexReserveInArray)
 
         if(type === 'modified') {
             if(indexReserveInArray > -1) {
